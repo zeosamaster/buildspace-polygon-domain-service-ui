@@ -8,7 +8,7 @@ import { ContractContext } from "./context/ContractContext";
 
 const App = () => {
   const { account } = React.useContext(WalletContext);
-  const { mint } = React.useContext(ContractContext);
+  const { mint, setRecord } = React.useContext(ContractContext);
 
   return (
     <div className="App">
@@ -23,7 +23,7 @@ const App = () => {
         </div>
 
         {!account && <ConnectWalletButton />}
-        {account && <InputForm onMint={mint} onSetRecord={() => {}} />}
+        {account && <InputForm onMint={mint} onSetRecord={setRecord} />}
 
         <div className="footer-container">
           <img alt="Twitter Logo" className="twitter-logo" src={twitterLogo} />
