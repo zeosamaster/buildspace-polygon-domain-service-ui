@@ -9,8 +9,10 @@ import polygonLogo from "./assets/polygonlogo.png";
 import ethLogo from "./assets/ethlogo.png";
 
 const App = () => {
-  const { account, network } = React.useContext(WalletContext);
+  const { switchNetwork, account, network } = React.useContext(WalletContext);
   const { mint, setRecord } = React.useContext(ContractContext);
+
+  const wrongNetwork = network !== "Polygon Mumbai Testnet";
 
   return (
     <div className="App">
@@ -41,13 +43,21 @@ const App = () => {
           </header>
         </div>
 
-        {!account && <ConnectWalletButton />}
-        {account && (
-          <InputForm
-            wrongNetwork={network !== "Polygon Mumbai Testnet"}
-            onMint={mint}
-            onSetRecord={setRecord}
-          />
+        {wrongNetwork && (
+          <div className="connect-wallet-container">
+            <p>Please connect to the Polygon Mumbai Testnet</p>
+            <button
+              className="cta-button mint-button"
+              onClick={() => switchNetwork("0x13881")}
+            >
+              Click here to switch
+            </button>
+          </div>
+        )}
+
+        {!wrongNetwork && !account && <ConnectWalletButton />}
+        {!wrongNetwork && account && (
+          <InputForm onMint={mint} onSetRecord={setRecord} />
         )}
 
         <div className="footer-container">

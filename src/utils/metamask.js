@@ -30,10 +30,10 @@ export const getChainId = async () => {
   return await getEthereum().request({ method: "eth_chainId" });
 };
 
-export const addChain = async ({ chainId, chainName, rpcUrls }) => {
+export const addChain = async (params) => {
   await getEthereum().request({
     method: "wallet_addEthereumChain",
-    params: [{ chainId, chainName, rpcUrls }],
+    params: [params],
   });
 };
 
@@ -42,6 +42,28 @@ export const switchChain = async (chainId) => {
     method: "wallet_switchEthereumChain",
     params: [{ chainId }],
   });
+};
+
+export const switchOrAddChain = async (chainId) => {
+  try {
+    await switchChain(chainId);
+  } catch (error) {
+    if (error.code === 4902) {
+      await addChain({
+        chainId: "0x13881",
+        chainName: "Polygon Mumbai Testnet",
+        rpcUrls: ["https://rpc-mumbai.maticvigil.com/"],
+        nativeCurrency: {
+          name: "Mumbai Matic",
+          symbol: "MATIC",
+          decimals: 18,
+        },
+        blockExplorerUrls: ["https://mumbai.polygonscan.com/"],
+      });
+    } else {
+      throw error;
+    }
+  }
 };
 
 export const addToken = async ({ address, symbol }) => {

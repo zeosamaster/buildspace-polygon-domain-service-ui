@@ -4,11 +4,13 @@ import {
   getChainId,
   getConnectedAccount,
   onChainChange,
+  switchOrAddChain,
 } from "../utils/metamask";
 import { networks } from "../utils/networks";
 
 export const WalletContext = React.createContext({
-  connect: () => {},
+  connect: () => Promise.reject(),
+  switchNetwork: () => Promise.reject(),
 });
 
 export function WalletContextProvider({ children }) {
@@ -48,7 +50,11 @@ export function WalletContextProvider({ children }) {
     checkConnectedAccount();
   }, [checkConnectedAccount]);
 
-  const value = { account, network, connect };
+  const switchNetwork = React.useCallback((chainId) => {
+    switchOrAddChain(chainId);
+  }, []);
+
+  const value = { account, network, connect, switchNetwork };
 
   return (
     <WalletContext.Provider value={value}>{children}</WalletContext.Provider>
