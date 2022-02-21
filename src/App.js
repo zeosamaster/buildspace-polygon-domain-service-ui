@@ -5,9 +5,11 @@ import { ConnectWalletButton } from "./components/ConnectWalletButton";
 import { InputForm } from "./components/InputForm";
 import { WalletContext } from "./context/WalletContext";
 import { ContractContext } from "./context/ContractContext";
+import polygonLogo from "./assets/polygonlogo.png";
+import ethLogo from "./assets/ethlogo.png";
 
 const App = () => {
-  const { account } = React.useContext(WalletContext);
+  const { account, network } = React.useContext(WalletContext);
   const { mint, setRecord } = React.useContext(ContractContext);
 
   return (
@@ -18,6 +20,23 @@ const App = () => {
             <div className="left">
               <p className="title">🧱🚀 Developer DAO Name Service</p>
               <p className="subtitle">Your D_D record on the blockchain!</p>
+            </div>
+
+            <div className="right">
+              {network && (
+                <img
+                  alt="Network logo"
+                  className="logo"
+                  src={network.includes("Polygon") ? polygonLogo : ethLogo}
+                />
+              )}
+              {!account && <p>Not connected</p>}
+              {account && (
+                <p>
+                  Wallet: {account.slice(0, 6)}...
+                  {account.slice(-4)}
+                </p>
+              )}
             </div>
           </header>
         </div>
