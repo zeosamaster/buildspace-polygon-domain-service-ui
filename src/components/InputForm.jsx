@@ -2,7 +2,7 @@ import React from "react";
 
 const tld = ".D_D";
 
-export function InputForm({ onMint, onSetRecord }) {
+export function InputForm({ loading, onMint, onSetRecord }) {
   const [domain, setDomain] = React.useState("");
   const [record, setRecord] = React.useState({ twitter: "", discord: "" });
 
@@ -45,14 +45,14 @@ export function InputForm({ onMint, onSetRecord }) {
       <div className="button-container">
         <button
           className="cta-button mint-button"
-          disabled={domain.length === 0}
+          disabled={loading || domain.length === 0}
           onClick={() => onMint(domain)}
         >
           Mint
         </button>
         <button
           className="cta-button mint-button"
-          disabled={Object.values(record).join("").length === 0}
+          disabled={loading || Object.values(record).join("").length === 0}
           onClick={() => onSetRecord(domain, record)}
         >
           Set data

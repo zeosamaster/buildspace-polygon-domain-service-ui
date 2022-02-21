@@ -13,6 +13,7 @@ export const ContractContext = React.createContext({
 export const ContractContextProvider = function ({ children }) {
   const { network } = React.useContext(WalletContext);
   const [contract, setContract] = React.useState();
+  const [loading, setLoading] = React.useState(false);
 
   // contract
   const retrieveContract = React.useCallback(() => {
@@ -39,24 +40,22 @@ export const ContractContextProvider = function ({ children }) {
   // mint
   const mint = React.useCallback(
     async (domain) => {
-      // Don't run if the domain is empty
       if (!domain) {
         throw Error("Domain is required");
       }
 
-      // Get the price from the contract
-      const price = await getPrice();
+      setLoading(true);
 
       try {
+        const price = await getPrice();
+
         console.log("Going to pop wallet now to pay gas...");
         let tx = await contract.register(domain, {
           value: price,
         });
 
-        // Wait for the transaction to be mined
         const receipt = await tx.wait();
 
-        // Check if the transaction was successfully completed
         if (receipt.status !== 1) {
           throw Error("Transaction failed! Please try again");
         }
@@ -67,6 +66,8 @@ export const ContractContextProvider = function ({ children }) {
       } catch (error) {
         console.log(error);
       }
+
+      setLoading(false);
     },
     [contract, getPrice]
   );
@@ -74,16 +75,22 @@ export const ContractContextProvider = function ({ children }) {
   // set record
   const setRecord = React.useCallback(
     async (domain, record) => {
-      // Don't run if the domain is empty
       if (!domain) {
         throw Error("Domain is required");
       }
 
-      // Set the record for the domain
-      const tx = await contract.setRecord(domain, record);
-      await tx.wait();
+      setLoading(true);
 
-      console.log("Record set! https://mumbai.polygonscan.com/tx/" + tx.hash);
+      try {
+        const tx = await contract.setRecord(domain, record);
+        await tx.wait();
+
+        console.log("Record set! https://mumbai.polygonscan.com/tx/" + tx.hash);
+      } catch (error) {
+        console.log(error);
+      }
+
+      setLoading(false);
     },
     [contract]
   );
@@ -92,6 +99,7 @@ export const ContractContextProvider = function ({ children }) {
   const value = {
     mint,
     setRecord,
+    loading,
   };
 
   return (

@@ -10,7 +10,7 @@ import ethLogo from "./assets/ethlogo.png";
 
 const App = () => {
   const { switchNetwork, account, network } = React.useContext(WalletContext);
-  const { mint, setRecord } = React.useContext(ContractContext);
+  const { mint, setRecord, loading } = React.useContext(ContractContext);
 
   const wrongNetwork = network !== "Polygon Mumbai Testnet";
 
@@ -57,7 +57,7 @@ const App = () => {
 
         {!wrongNetwork && !account && <ConnectWalletButton />}
         {!wrongNetwork && account && (
-          <InputForm onMint={mint} onSetRecord={setRecord} />
+          <InputForm loading={loading} onMint={mint} onSetRecord={setRecord} />
         )}
 
         <div className="footer-container">
