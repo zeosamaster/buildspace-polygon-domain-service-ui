@@ -2,6 +2,7 @@ import React from "react";
 import "./styles/App.css";
 import twitterLogo from "./assets/twitter-logo.svg";
 import { ConnectWalletButton } from "./components/ConnectWalletButton";
+import { InputForm } from "./components/InputForm";
 import { WalletContext } from "./context/WalletContext";
 
 const App = () => {
@@ -20,6 +21,7 @@ const App = () => {
         </div>
 
         {!account && <ConnectWalletButton />}
+        {account && <InputForm onMint={() => {}} onSetRecord={() => {}} />}
 
         <div className="footer-container">
           <img alt="Twitter Logo" className="twitter-logo" src={twitterLogo} />
