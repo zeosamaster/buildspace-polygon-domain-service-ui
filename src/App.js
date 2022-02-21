@@ -1,8 +1,12 @@
 import React from "react";
 import "./styles/App.css";
 import twitterLogo from "./assets/twitter-logo.svg";
+import { ConnectWalletButton } from "./components/ConnectWalletButton";
+import { WalletContext } from "./context/WalletContext";
 
 const App = () => {
+  const { account } = React.useContext(WalletContext);
+
   return (
     <div className="App">
       <div className="container">
@@ -14,6 +18,8 @@ const App = () => {
             </div>
           </header>
         </div>
+
+        {!account && <ConnectWalletButton />}
 
         <div className="footer-container">
           <img alt="Twitter Logo" className="twitter-logo" src={twitterLogo} />
