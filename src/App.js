@@ -4,9 +4,11 @@ import twitterLogo from "./assets/twitter-logo.svg";
 import { ConnectWalletButton } from "./components/ConnectWalletButton";
 import { InputForm } from "./components/InputForm";
 import { WalletContext } from "./context/WalletContext";
+import { ContractContext } from "./context/ContractContext";
 
 const App = () => {
   const { account } = React.useContext(WalletContext);
+  const { mint } = React.useContext(ContractContext);
 
   return (
     <div className="App">
@@ -21,7 +23,7 @@ const App = () => {
         </div>
 
         {!account && <ConnectWalletButton />}
-        {account && <InputForm onMint={() => {}} onSetRecord={() => {}} />}
+        {account && <InputForm onMint={mint} onSetRecord={() => {}} />}
 
         <div className="footer-container">
           <img alt="Twitter Logo" className="twitter-logo" src={twitterLogo} />

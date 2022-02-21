@@ -46,7 +46,7 @@ export function InputForm({ onMint, onSetRecord }) {
         <button
           className="cta-button mint-button"
           disabled={domain.length === 0}
-          onClick={onMint}
+          onClick={() => onMint(domain)}
         >
           Mint
         </button>
