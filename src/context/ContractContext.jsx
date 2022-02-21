@@ -1,6 +1,7 @@
 import React from "react";
 import { getContract } from "../utils/metamask";
 import Domains from "../contracts/Domains.json";
+import { WalletContext } from "./WalletContext";
 
 const CONTRACT_ADDRESS = "0x61719f0c2872D6408eA517191FDC12Da1c888eb3";
 
@@ -10,22 +11,32 @@ export const ContractContext = React.createContext({
 });
 
 export const ContractContextProvider = function ({ children }) {
+  const { network } = React.useContext(WalletContext);
   const [contract, setContract] = React.useState();
 
+  // contract
   const retrieveContract = React.useCallback(() => {
+    try {
     const c = getContract(CONTRACT_ADDRESS, Domains.abi);
     setContract(c);
+    } catch (e) {
+      console.error(e);
+    }
   }, []);
 
   React.useEffect(() => {
+    if (network === "Polygon Mumbai Testnet") {
     retrieveContract();
-  }, [retrieveContract]);
+    }
+  }, [retrieveContract, network]);
 
+  // price
   const getPrice = React.useCallback(async () => {
     const price = await contract.price();
     return price;
   }, [contract]);
 
+  // mint
   const mint = React.useCallback(
     async (domain) => {
       // Don't run if the domain is empty
@@ -60,6 +71,7 @@ export const ContractContextProvider = function ({ children }) {
     [contract, getPrice]
   );
 
+  // set record
   const setRecord = React.useCallback(
     async (domain, record) => {
       // Don't run if the domain is empty
@@ -76,6 +88,7 @@ export const ContractContextProvider = function ({ children }) {
     [contract]
   );
 
+  // value
   const value = {
     mint,
     setRecord,

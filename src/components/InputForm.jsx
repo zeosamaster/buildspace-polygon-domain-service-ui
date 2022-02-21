@@ -2,9 +2,17 @@ import React from "react";
 
 const tld = ".D_D";
 
-export function InputForm({ onMint, onSetRecord }) {
+export function InputForm({ wrongNetwork, onMint, onSetRecord }) {
   const [domain, setDomain] = React.useState("");
   const [record, setRecord] = React.useState({ twitter: "", discord: "" });
+
+  if (wrongNetwork) {
+    return (
+      <div className="connect-wallet-container">
+        <p>Please connect to the Polygon Mumbai Testnet</p>
+      </div>
+    );
+  }
 
   return (
     <div className="form-container">

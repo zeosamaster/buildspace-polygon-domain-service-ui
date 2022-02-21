@@ -42,7 +42,13 @@ const App = () => {
         </div>
 
         {!account && <ConnectWalletButton />}
-        {account && <InputForm onMint={mint} onSetRecord={setRecord} />}
+        {account && (
+          <InputForm
+            wrongNetwork={network !== "Polygon Mumbai Testnet"}
+            onMint={mint}
+            onSetRecord={setRecord}
+          />
+        )}
 
         <div className="footer-container">
           <img alt="Twitter Logo" className="twitter-logo" src={twitterLogo} />
