@@ -28,8 +28,10 @@ export function WalletContextProvider({ children }) {
   }, [setAccount]);
 
   const checkConnectedAccount = React.useCallback(async () => {
-    const connectedAccount = await getConnectedAccount();
-    setAccount(connectedAccount);
+    try {
+      const connectedAccount = await getConnectedAccount();
+      setAccount(connectedAccount);
+    } catch (e) {}
   }, []);
 
   React.useEffect(() => {
