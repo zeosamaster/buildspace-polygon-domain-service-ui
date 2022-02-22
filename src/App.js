@@ -61,13 +61,15 @@ const App = () => {
           <InputForm loading={loading} onMint={mint} onSetRecord={setRecord} />
         )}
 
-        <div className="mint-container">
-          <p className="subtitle"> Recently minted domains!</p>
-          <div className="mint-list">
-            {mints?.length > 0 &&
-              mints.map((mint) => <Mint key={mint.id} mint={mint} />)}
+        {!wrongNetwork && account && (
+          <div className="mint-container">
+            <p className="subtitle"> Recently minted domains!</p>
+            <div className="mint-list">
+              {mints?.length > 0 &&
+                mints.map((mint) => <Mint key={mint.id} mint={mint} />)}
+            </div>
           </div>
-        </div>
+        )}
 
         <div className="footer-container">
           <img alt="Twitter Logo" className="twitter-logo" src={twitterLogo} />
