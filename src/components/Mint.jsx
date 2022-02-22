@@ -1,7 +1,12 @@
 import React from "react";
 import { CONTRACT_ADDRESS, TLD } from "../context/ContractContext";
+import { WalletContext } from "../context/WalletContext";
+import { FormContext } from "../context/FormContext";
 
 export function Mint({ mint }) {
+  const { account } = React.useContext(WalletContext);
+  const { setMint } = React.useContext(FormContext);
+
   return (
     <div className="mint-item">
       <div className="mint-row">
@@ -16,6 +21,16 @@ export function Mint({ mint }) {
             {TLD}
           </p>
         </a>
+
+        {mint.owner.toLowerCase() === account.toLowerCase() && (
+          <button className="edit-button" onClick={() => setMint(mint)}>
+            <img
+              className="edit-icon"
+              src="https://img.icons8.com/metro/26/000000/pencil.png"
+              alt="Edit button"
+            />
+          </button>
+        )}
       </div>
 
       {Object.entries(mint.record).map(([key, value]) => (

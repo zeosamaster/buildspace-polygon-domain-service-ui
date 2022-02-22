@@ -1,9 +1,10 @@
 import React from "react";
 import { TLD } from "../context/ContractContext";
+import { FormContext } from "../context/FormContext";
 
 export function InputForm({ loading, onMint, onSetRecord }) {
-  const [domain, setDomain] = React.useState("");
-  const [record, setRecord] = React.useState({ twitter: "", discord: "" });
+  const { domain, record, isMinted, canSetRecord, setDomain, setRecord } =
+    React.useContext(FormContext);
 
   return (
     <div className="form-container">
@@ -44,14 +45,14 @@ export function InputForm({ loading, onMint, onSetRecord }) {
       <div className="button-container">
         <button
           className="cta-button mint-button"
-          disabled={loading || domain.length === 0}
+          disabled={loading || isMinted || domain.length === 0}
           onClick={() => onMint(domain)}
         >
           Mint
         </button>
         <button
           className="cta-button mint-button"
-          disabled={loading || Object.values(record).join("").length === 0}
+          disabled={loading || !canSetRecord}
           onClick={() => onSetRecord(domain, record)}
         >
           Set data
