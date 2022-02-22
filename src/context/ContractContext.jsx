@@ -13,7 +13,7 @@ export const ContractContext = React.createContext({
 });
 
 export const ContractContextProvider = function ({ children }) {
-  const { network } = React.useContext(WalletContext);
+  const { account, network } = React.useContext(WalletContext);
   const [contract, setContract] = React.useState();
   const [loading, setLoading] = React.useState(false);
   const [mints, setMints] = React.useState([]);
@@ -64,10 +64,10 @@ export const ContractContextProvider = function ({ children }) {
   }, [contract]);
 
   React.useEffect(() => {
-    if (contract && network === "Polygon Mumbai Testnet") {
+    if (account && contract && network === "Polygon Mumbai Testnet") {
       getAllNames();
     }
-  }, [contract, network, getAllNames]);
+  }, [account, contract, network, getAllNames]);
 
   // mint
   const mint = React.useCallback(
