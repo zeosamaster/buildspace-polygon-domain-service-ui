@@ -3,7 +3,7 @@ import { getContract } from "../utils/metamask";
 import Domains from "../contracts/Domains.json";
 import { WalletContext } from "./WalletContext";
 
-const CONTRACT_ADDRESS = "0x61719f0c2872D6408eA517191FDC12Da1c888eb3";
+const CONTRACT_ADDRESS = "0x1Cd988185bD2D2639508C4D850037Ff5514996f0";
 
 export const ContractContext = React.createContext({
   mint: () => Promise.reject(),
