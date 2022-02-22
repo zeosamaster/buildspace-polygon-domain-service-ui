@@ -3,6 +3,7 @@ import "./styles/App.css";
 import twitterLogo from "./assets/twitter-logo.svg";
 import { ConnectWalletButton } from "./components/ConnectWalletButton";
 import { InputForm } from "./components/InputForm";
+import { Mint } from "./components/Mint";
 import { WalletContext } from "./context/WalletContext";
 import { ContractContext } from "./context/ContractContext";
 import polygonLogo from "./assets/polygonlogo.png";
@@ -10,7 +11,7 @@ import ethLogo from "./assets/ethlogo.png";
 
 const App = () => {
   const { switchNetwork, account, network } = React.useContext(WalletContext);
-  const { mint, setRecord, loading } = React.useContext(ContractContext);
+  const { mint, setRecord, loading, mints } = React.useContext(ContractContext);
 
   const wrongNetwork = network !== "Polygon Mumbai Testnet";
 
@@ -59,6 +60,14 @@ const App = () => {
         {!wrongNetwork && account && (
           <InputForm loading={loading} onMint={mint} onSetRecord={setRecord} />
         )}
+
+        <div className="mint-container">
+          <p className="subtitle"> Recently minted domains!</p>
+          <div className="mint-list">
+            {mints?.length > 0 &&
+              mints.map((mint) => <Mint key={mint.id} mint={mint} />)}
+          </div>
+        </div>
 
         <div className="footer-container">
           <img alt="Twitter Logo" className="twitter-logo" src={twitterLogo} />

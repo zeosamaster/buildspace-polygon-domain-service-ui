@@ -3,23 +3,26 @@ import { getContract } from "../utils/metamask";
 import Domains from "../contracts/Domains.json";
 import { WalletContext } from "./WalletContext";
 
-const CONTRACT_ADDRESS = "0x1Cd988185bD2D2639508C4D850037Ff5514996f0";
+export const CONTRACT_ADDRESS = "0x1Cd988185bD2D2639508C4D850037Ff5514996f0";
+export const TLD = ".D_D";
 
 export const ContractContext = React.createContext({
   mint: () => Promise.reject(),
   setRecord: () => Promise.reject(),
+  mints: [],
 });
 
 export const ContractContextProvider = function ({ children }) {
   const { network } = React.useContext(WalletContext);
   const [contract, setContract] = React.useState();
   const [loading, setLoading] = React.useState(false);
+  const [mints, setMints] = React.useState([]);
 
   // contract
   const retrieveContract = React.useCallback(() => {
     try {
-    const c = getContract(CONTRACT_ADDRESS, Domains.abi);
-    setContract(c);
+      const c = getContract(CONTRACT_ADDRESS, Domains.abi);
+      setContract(c);
     } catch (e) {
       console.error(e);
     }
@@ -27,7 +30,7 @@ export const ContractContextProvider = function ({ children }) {
 
   React.useEffect(() => {
     if (network === "Polygon Mumbai Testnet") {
-    retrieveContract();
+      retrieveContract();
     }
   }, [retrieveContract, network]);
 
@@ -36,6 +39,35 @@ export const ContractContextProvider = function ({ children }) {
     const price = await contract.price();
     return price;
   }, [contract]);
+
+  // all names
+  const getAllNames = React.useCallback(async () => {
+    try {
+      const names = await contract.getAllNames();
+
+      const mintRecords = await Promise.all(
+        names.map(async (name, id) => {
+          const { twitter, discord } = await contract.records(name);
+          return {
+            id,
+            name,
+            record: { twitter, discord },
+            owner: await contract.domains(name),
+          };
+        })
+      );
+
+      setMints(mintRecords);
+    } catch (e) {
+      console.error(e);
+    }
+  }, [contract]);
+
+  React.useEffect(() => {
+    if (contract && network === "Polygon Mumbai Testnet") {
+      getAllNames();
+    }
+  }, [contract, network, getAllNames]);
 
   // mint
   const mint = React.useCallback(
@@ -63,13 +95,15 @@ export const ContractContextProvider = function ({ children }) {
         console.log(
           "Domain minted! https://mumbai.polygonscan.com/tx/" + tx.hash
         );
+
+        getAllNames();
       } catch (error) {
         console.log(error);
       }
 
       setLoading(false);
     },
-    [contract, getPrice]
+    [contract, getPrice, getAllNames]
   );
 
   // set record
@@ -86,19 +120,22 @@ export const ContractContextProvider = function ({ children }) {
         await tx.wait();
 
         console.log("Record set! https://mumbai.polygonscan.com/tx/" + tx.hash);
+
+        getAllNames();
       } catch (error) {
         console.log(error);
       }
 
       setLoading(false);
     },
-    [contract]
+    [contract, getAllNames]
   );
 
   // value
   const value = {
     mint,
     setRecord,
+    mints,
     loading,
   };
 

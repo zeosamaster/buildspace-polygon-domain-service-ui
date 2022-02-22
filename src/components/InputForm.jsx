@@ -1,6 +1,5 @@
 import React from "react";
-
-const tld = ".D_D";
+import { TLD } from "../context/ContractContext";
 
 export function InputForm({ loading, onMint, onSetRecord }) {
   const [domain, setDomain] = React.useState("");
@@ -15,7 +14,7 @@ export function InputForm({ loading, onMint, onSetRecord }) {
           placeholder="Dev #"
           onChange={(e) => setDomain(e.target.value)}
         />
-        <p className="tld"> {tld} </p>
+        <p className="tld"> {TLD} </p>
       </div>
 
       <input
