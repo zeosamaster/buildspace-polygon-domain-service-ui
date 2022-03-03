@@ -86,3 +86,7 @@ export const connectAccount = async () => {
   });
   return accounts[0];
 };
+
+export const onAccountChange = (cb) => {
+  window.ethereum.on("accountsChanged", (accounts) => cb(accounts[0]));
+};

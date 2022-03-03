@@ -3,6 +3,7 @@ import {
   connectAccount,
   getChainId,
   getConnectedAccount,
+  onAccountChange,
   onChainChange,
   switchOrAddChain,
 } from "../utils/metamask";
@@ -50,6 +51,7 @@ export function WalletContextProvider({ children }) {
 
   React.useEffect(() => {
     checkConnectedAccount();
+    onAccountChange((account) => setAccount(account));
   }, [checkConnectedAccount]);
 
   const switchNetwork = React.useCallback((chainId) => {
