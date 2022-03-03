@@ -173,7 +173,8 @@ header {
   align-items: center;
 }
 
-input {
+input,
+select {
   border: 0;
   border-radius: 12px;
   background-color: black;
@@ -186,22 +187,33 @@ input {
   text-align: center;
 }
 
+select {
+  width: 440px;
+  color: gray;
+}
+
 input::placeholder {
   color: gray;
   letter-spacing: 2px;
 }
 
-input:focus {
+input:focus,
+select:focus {
   outline: none;
 }
 
-.first-row {
+.domain-container {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 10px;
+}
+
+.domain-input {
   position: relative;
   display: flex;
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 10px;
 }
 
 .tld {

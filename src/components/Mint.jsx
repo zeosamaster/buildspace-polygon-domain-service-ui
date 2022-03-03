@@ -34,7 +34,7 @@ export function Mint({ mint }) {
       </div>
 
       {Object.entries(mint.record).map(([key, value]) => (
-        <p>
+        <p key={key}>
           {key}: {value}
         </p>
       ))}

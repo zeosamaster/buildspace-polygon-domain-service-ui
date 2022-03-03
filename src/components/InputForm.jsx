@@ -1,21 +1,34 @@
 import React from "react";
 import { TLD } from "../context/ContractContext";
+import { ERC721Context } from "../context/ERC721Context";
 import { FormContext } from "../context/FormContext";
+import TokensDropdown from "./TokensDropdown";
 
 export function InputForm({ loading, onMint, onSetRecord }) {
   const { domain, record, isMinted, canSetRecord, setDomain, setRecord } =
     React.useContext(FormContext);
+  const { tokens } = React.useContext(ERC721Context);
+
+  const onToken = React.useCallback(
+    (token) => {
+      setDomain(token);
+    },
+    [setDomain]
+  );
 
   return (
     <div className="form-container">
-      <div className="first-row">
-        <input
-          type="text"
-          value={domain}
-          placeholder="Dev #"
-          onChange={(e) => setDomain(e.target.value)}
-        />
-        <p className="tld"> {TLD} </p>
+      <div className="domain-container">
+        <div className="domain-input">
+          <input
+            type="text"
+            value={domain}
+            placeholder="Dev #"
+            onChange={(e) => setDomain(e.target.value)}
+          />
+          <p className="tld"> {TLD} </p>
+        </div>
+        {tokens && <TokensDropdown tokens={tokens} onChange={onToken} />}
       </div>
 
       <input
