@@ -6,6 +6,7 @@ import { InputForm } from "./components/InputForm";
 import { Mint } from "./components/Mint";
 import { WalletContext } from "./context/WalletContext";
 import { ContractContext } from "./context/ContractContext";
+import { Tokens } from "./components/Tokens";
 import polygonLogo from "./assets/polygonlogo.png";
 import ethLogo from "./assets/ethlogo.png";
 
@@ -26,20 +27,25 @@ const App = () => {
             </div>
 
             <div className="right">
-              {network && (
-                <img
-                  alt="Network logo"
-                  className="logo"
-                  src={network.includes("Polygon") ? polygonLogo : ethLogo}
-                />
-              )}
-              {!account && <p>Not connected</p>}
-              {account && (
-                <p>
-                  Wallet: {account.slice(0, 6)}...
-                  {account.slice(-4)}
-                </p>
-              )}
+              <div className="wallet">
+                {network && (
+                  <img
+                    alt="Network logo"
+                    className="logo"
+                    src={network.includes("Polygon") ? polygonLogo : ethLogo}
+                  />
+                )}
+                {!account && <p>Not connected</p>}
+                {account && (
+                  <p>
+                    Wallet: {account.slice(0, 6)}...
+                    {account.slice(-4)}
+                  </p>
+                )}
+              </div>
+              <div className="tokens">
+                <Tokens />
+              </div>
             </div>
           </header>
         </div>

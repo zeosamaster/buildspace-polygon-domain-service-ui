@@ -1,0 +1,4 @@
+[
+  "function balanceOf(address owner) public view returns (uint256 balance)",
+  "function tokenOfOwnerByIndex(address owner, uint256 index) external view returns (uint256 tokenId)"
+]
