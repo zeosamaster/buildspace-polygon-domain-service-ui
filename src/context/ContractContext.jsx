@@ -47,12 +47,18 @@ export const ContractContextProvider = function ({ children }) {
 
       const mintRecords = await Promise.all(
         names.map(async (name, id) => {
-          const { twitter, discord } = await contract.records(name);
+          const { twitter, discord } = await contract
+            .records(name)
+            .catch(() => ({ twitter: "N/A", discord: "N/A" }));
+          const owner = await contract.domains(name).catch(() => "N/A");
           return {
             id,
             name,
-            record: { twitter, discord },
-            owner: await contract.domains(name),
+            record: {
+              twitter,
+              discord,
+            },
+            owner,
           };
         })
       );
